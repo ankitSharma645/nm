@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
-    "beta":"npm start --prefix ./beta",
-    "dev":"concurrently \"npm run server\" \"npm run beta\""
+    "beta": "npm start --prefix ./beta",
+    "dev": "concurrently \"npm run server\" \"npm run beta\""
   },
   "keywords": [],
   "author": "ankii",
@@ -24,6 +24,7 @@
     "mongoose": "^6.10.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.0",
-    "react-icons": "^5.2.0"
+    "react-icons": "^5.2.0",
+    "slugify": "^1.6.6"
   }
 }
