@@ -20,7 +20,7 @@ function Header() {
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <Link className="navbar-brand">🛒 Ecommerce App</Link>
+          <Link className="navbar-brand">🛒 BookWing</Link>
           <button
             className="navbar-toggler"
             type="button"
