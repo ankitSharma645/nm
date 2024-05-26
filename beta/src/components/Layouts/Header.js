@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../pages/context/auth";
+import SearchInput from "../Forms/SearchInput";
+
 
 function Header() {
   const [auth, setAuth] = useAuth();
@@ -32,6 +34,8 @@ function Header() {
           ></button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+           <SearchInput></SearchInput>
+            
               <li className="nav-item">
                 <NavLink to="/" className="nav-link">
                   Home

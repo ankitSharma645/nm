@@ -4,14 +4,17 @@ import Layout from "../components/Layouts/Layout";
 import axios from "axios";
 import { Checkbox, Radio } from "antd";
 import { Prices } from "../components/Prices";
+
+import { useNavigate } from "react-router-dom";
 /*
 import { Prices } from "../components/Prices";*/
 const HomePage = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
-  
+
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -30,12 +33,12 @@ const HomePage = () => {
       console.log(error);
     }
   };
-  
+
   useEffect(() => {
     if (page === 1) return;
     loadMore();
   }, [page]);
-  
+
   const loadMore = async () => {
     try {
       setLoading(true);
@@ -51,7 +54,7 @@ const HomePage = () => {
       setLoading(false);
     }
   };
-  
+
   // get all cat
   const getAllCategory = async () => {
     try {
@@ -67,12 +70,12 @@ const HomePage = () => {
       console.log(error);
     }
   };
-  
+
   useEffect(() => {
     getAllCategory();
     getTotal();
   }, []);
-  // get all products 
+  // get all products
   const getAllProducts = async () => {
     try {
       setLoading(true);
@@ -88,7 +91,7 @@ const HomePage = () => {
       console.log(error);
     }
   };
-  
+
   // filter by cat
   const handleFilter = (value, id) => {
     let all = [...checked];
@@ -99,23 +102,28 @@ const HomePage = () => {
     }
     setChecked(all);
   };
-  
+
   useEffect(() => {
     if (!checked.length || !radio.length) getAllProducts();
   }, [checked.length, radio.length]);
-  
+
   useEffect(() => {
     if (checked.length || radio.length) filterProduct();
   }, [checked, radio]);
-  
+
   // get filtered product
   const filterProduct = async () => {
     try {
-      const { data } = await axios.post("/api/v1/product/product-filters", {
-        checked,
-        radio,
+      const res = await axios({
+        method: "post",
+        baseURL: "http://localhost:8000",
+        url: "/api/v1/product/product-filters",
+        data: {
+          checked,
+          radio,
+        },
       });
-      setProducts(data?.products);
+      setProducts(res.data?.products);
     } catch (error) {
       console.log(error);
     }
@@ -137,8 +145,8 @@ const HomePage = () => {
             ))}
           </div>
 
-           {/* price filter */}
-           <h4 className="text-center mt-4">Filter By Price</h4>
+          {/* price filter */}
+          <h4 className="text-center mt-4">Filter By Price</h4>
           <div className="d-flex flex-column">
             <Radio.Group onChange={(e) => setRadio(e.target.value)}>
               {Prices?.map((p) => (
@@ -158,12 +166,10 @@ const HomePage = () => {
           </div>
         </div>
         <div className="col-md-9">
-        
           <h1 className="text-center">All Products</h1>
           <div className="d-flex flex-wrap">
             {products?.map((p) => (
-              <div className="card m-4" style={{ width: "18rem"
-              }}>
+              <div className="card m-4" style={{ width: "18rem" }}>
                 <img
                   src={`http://localhost:8000/api/v1/product/product-photo/${p._id}`}
                   className="card-img-top"
@@ -175,7 +181,12 @@ const HomePage = () => {
                     {p.description.substring(0, 30)}...
                   </p>
                   <p className="card-text"> $ {p.price}</p>
-                  <button class="btn btn-primary ms-1">More Details</button>
+                  <button
+                    class="btn btn-primary ms-1"
+                    onClick={() => navigate(`/product/${p.slug}`)}
+                  >
+                    More Details
+                  </button>
                   <button class="btn btn-secondary ms-1">ADD TO CART</button>
                 </div>
               </div>
